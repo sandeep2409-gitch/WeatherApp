@@ -5,58 +5,281 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Weather App</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-    body{display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
-    .app{background:rgba(255,255,255,0.15);backdrop-filter:blur(15px);padding:30px;border-radius:20px;text-align:center;width:350px;box-shadow:0 8px 25px rgba(0,0,0,0.3);animation:fadeIn 1s ease}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    h1{margin-bottom:20px;font-size:1.8rem;font-weight:600}
-    input{padding:12px;border:none;border-radius:10px;width:80%;margin-bottom:15px;font-size:1rem;outline:none;text-align:center}
-    button{padding:12px 25px;border:none;border-radius:10px;background:#ff9800;color:#fff;font-size:1rem;cursor:pointer;transition:0.3s}
-    button:hover{background:#e67e22;transform:scale(1.05)}
-    .weather{margin-top:20px;opacity:0;transform:translateY(20px);transition:all 0.6s ease}
-    .weather.show{opacity:1;transform:translateY(0)}
-    .weather img{width:100px;animation:float 3s infinite ease-in-out}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-    .temp{font-size:2.5rem;font-weight:600;margin:10px 0}
-    .desc{font-size:1.2rem;text-transform:capitalize}
-    .details{margin-top:10px;font-size:0.95rem}
-    .error{margin-top:15px;color:#ff4c4c;font-weight:600}
+    body {
+      margin: 0;
+      font-family:'Times New Roman', Times, serif;
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      overflow: hidden;
+    }
+
+    .app {
+      width: 400px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 25px;
+      padding: 25px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+      animation: slideDown 1s ease;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+
+    .search-box {
+      display: flex;
+      margin-bottom: 20px;
+      animation: fadeIn 1.2s ease;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      outline: none;
+      text-align: center;
+    }
+
+    .search-box button {
+      margin-left: 10px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.3);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .search-box button:hover {
+      background: rgba(255,255,255,0.6);
+      transform: scale(1.05);
+    }
+
+    .main {
+      text-align: center;
+      margin-bottom: 20px;
+      animation: fadeInUp 1s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .city {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .condition {
+      font-size: 18px;
+      opacity: 0.9;
+      text-transform: capitalize;
+    }
+
+    .temp {
+      font-size: 60px;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+
+    .icon {
+      width: 90px;
+      height: 90px;
+      animation: float 3s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+
+    .hourly {
+      display: flex;
+      overflow-x: auto;
+      margin: 15px 0;
+      padding-bottom: 10px;
+      animation: slideIn 1.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(50px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .hour {
+      flex: 0 0 auto;
+      width: 70px;
+      text-align: center;
+      margin-right: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .hour:hover {
+      transform: scale(1.1);
+    }
+
+    .hour img {
+      width: 35px;
+      height: 35px;
+    }
+
+    .hour .time {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .hour .hour-temp {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .forecast {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      animation: fadeIn 1.5s ease;
+    }
+
+    .day {
+      text-align: center;
+      flex: 1;
+      transition: transform 0.3s ease;
+    }
+
+    .day:hover {
+      transform: scale(1.1);
+    }
+
+    .day img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .day .day-name {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .day .day-temp {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .error {
+      text-align: center;
+      margin-top: 10px;
+      color: #ff4c4c;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
   <div class="app">
-    <h1>🌦 Weather</h1>
-    <input type="text" id="city" placeholder="Enter city">
-    <button onclick="getWeather()">Search</button>
-    <div class="weather" id="weather">
-      <img id="icon" src="" alt="">
-      <div class="temp" id="temp"></div>
-      <div class="desc" id="desc"></div>
-      <div class="details" id="details"></div>
+    <h1>Weather</h1>
+    <div class="search-box">
+      <input type="text" id="city" placeholder="Enter city">
+      <button onclick="getWeather()">Search</button>
     </div>
-    <div class="error" id="error"></div>
+
+    <div class="main">
+      <div id="cityName" class="city">—</div>
+      <div id="condition" class="condition">—</div>
+      <img id="icon" class="icon" src="" alt="">
+      <div id="temperature" class="temp">—</div>
+    </div>
+  <div><h1>Hourly Forecast</h1></div>
+    <div id="hourly" class="hourly"></div>
+    <div><h1>Daily Forecast</h1></div>
+    <div id="forecast" class="forecast"></div>
+    <div id="error" class="error"></div>
   </div>
 
   <script>
-    const apiKey="2838a8628ab64c9dc76abf4e1c2abab9";
-    async function getWeather(){
-      const city=document.getElementById("city").value;
-      const weatherDiv=document.getElementById("weather");
-      const errorDiv=document.getElementById("error");
-      if(!city){errorDiv.textContent="Enter a city";weatherDiv.classList.remove("show");return}
-      const url=`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-      try{
-        const res=await fetch(url);
-        if(!res.ok)throw new Error();
-        const data=await res.json();
-        document.getElementById("icon").src=`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-        document.getElementById("temp").textContent=`${data.main.temp}°C`;
-        document.getElementById("desc").textContent=data.weather[0].description;
-        document.getElementById("details").textContent=`Humidity: ${data.main.humidity}% | Wind: ${data.wind.speed} m/s`;
-        weatherDiv.classList.add("show");errorDiv.textContent="";
-      }catch{errorDiv.textContent="City not found";weatherDiv.classList.remove("show")}
+    const apiKey = "ff8415b142534c13569760db2455ee06";
+
+    async function getWeather() {
+      const city = document.getElementById("city").value || "New Delhi";
+      const errorDiv = document.getElementById("error");
+      try {
+       
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("City not found");
+        const data = await res.json();
+
+        document.getElementById("cityName").textContent = data.name;
+        document.getElementById("condition").textContent = data.weather[0].description;
+        document.getElementById("temperature").textContent = `${Math.round(data.main.temp)}°C`;
+        document.getElementById("icon").src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
+        const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+        const forecastRes = await fetch(forecastUrl);
+        if (!forecastRes.ok) throw new Error("Forecast not found");
+        const forecastData = await forecastRes.json();
+        const hourlyEl = document.getElementById("hourly");
+        hourlyEl.innerHTML = forecastData.list.slice(0, 8).map(item => {
+          const time = new Date(item.dt_txt).toLocaleTimeString("en-US", { hour: "numeric" });
+          return `
+            <div class="hour">
+              <div class="time">${time}</div>
+              <img src="https://openweathermap.org/img/wn/${item.weather[0].icon}.png">
+              <div class="hour-temp">${Math.round(item.main.temp)}°</div>
+            </div>
+          `;
+        }).join("");
+
+        const daily = [];
+        for (let i = 0; i < forecastData.list.length; i += 8) {
+          const dayData = forecastData.list[i];
+          const date = new Date(dayData.dt_txt);
+          daily.push({
+            day: date.toLocaleDateString("en-US", { weekday: "short" }),
+            temp: Math.round(dayData.main.temp),
+            icon: dayData.weather[0].icon
+          });
+        }
+
+        const forecastEl = document.getElementById("forecast");
+        forecastEl.innerHTML = daily.map(d => `
+          <div class="day">
+            <div class="day-name">${d.day}</div>
+            <img src="https://openweathermap.org/img/wn/${d.icon}.png">
+            <div class="day-temp">${d.temp}°</div>
+          </div>
+        `).join("");
+
+        errorDiv.textContent = "";
+      } catch (err) {
+        console.error(err);
+        errorDiv.textContent = "City not found";
+      }
     }
+
+    getWeather();
   </script>
 </body>
 </html>
